@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/twitter4j-async-2.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-core-2.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-stream-2.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-3.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/language/colt.jar"/>
+	<classpathentry kind="lib" path="lib/language/concurrent.jar"/>
+	<classpathentry kind="lib" path="lib/language/java-getopt-1.0.13.jar"/>
+	<classpathentry kind="lib" path="lib/language/lc4j-0.3.jar" sourcepath="lib/language/lc4j-0.3.jar"/>
+	<classpathentry kind="lib" path="lib/language/mg4j-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/language/fastutil-6.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/mongo-2.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
