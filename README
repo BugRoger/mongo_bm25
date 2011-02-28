@@ -1,0 +1,6 @@
+1. import the sample data
+mongoimport -d mongosearch -c statuses --file data/statuses.dump
+
+2. Run Status Indexer
+
+3. Run MongoSearch... Profit!
