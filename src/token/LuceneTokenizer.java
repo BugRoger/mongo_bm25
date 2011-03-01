@@ -18,6 +18,10 @@ public class LuceneTokenizer implements Tokenizer {
 
 	@Override
 	public List<String> tokenize(String text) {
+	    if (text == null) {
+		return new ArrayList<String>();
+	    }
+	    
 		TokenStream stream = new PorterStemFilter(ANALYSER.tokenStream(
 				"whatever", new StringReader(text)));
 		TermAttribute term = (TermAttribute) stream

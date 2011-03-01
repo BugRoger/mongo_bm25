@@ -40,13 +40,14 @@ public class GenericBM25Ranking<T extends SearchableDBObject> {
 	
 	System.out.println("Ensuring that there's a term index");
 	collection.ensureIndex(new BasicDBObject("tf.t", 1));
-
-	preCalculateTermDocumentCounts();
-	IDF           = preCalculateIDFs();
-	averageLength = preCalculateAverageDocumentLength();
 	
+	preCalculateTermDocumentCounts();
+	averageLength = preCalculateAverageDocumentLength();
+
 	System.out.println("Analysing Query");
 	queryTerms = TOKENIZER.tokenize(query);
+	
+	IDF           = preCalculateIDFs();
     }
 
     @SuppressWarnings("unchecked")
@@ -106,8 +107,11 @@ public class GenericBM25Ranking<T extends SearchableDBObject> {
 
 	long totalDocs = collection.count();
 	for (String term : queryTerms) {
-	    long foundDocs = collection.find(new BasicDBObject("tf.t", term)).count();
-
+	    BasicDBObject nqi = (BasicDBObject)collection.getDB().getCollection(collection.getName()+"_nqi").findOne(new BasicDBObject("_id", term));
+	    if (nqi == null) {
+		continue;
+	    }
+	    long foundDocs = ((BasicDBObject)nqi.get("value")).getLong("count");
 	    IDF.put(term, idf(totalDocs, foundDocs));
 	}
 	
@@ -121,7 +125,7 @@ public class GenericBM25Ranking<T extends SearchableDBObject> {
 
     
     private double preCalculateAverageDocumentLength(){
-	DBCollection averageDocCollection = collection.getDB().getCollection("avg");
+	DBCollection averageDocCollection = collection.getDB().getCollection(collection.getName()+"_avg");
 	if (averageDocCollection.count() == 0) {
 	    System.out.println("Calculating average document length");
 	    String map;
@@ -137,15 +141,15 @@ public class GenericBM25Ranking<T extends SearchableDBObject> {
 		return 12.0;
 	    } 
 	    DBObject query = new BasicDBObject();
-	    collection.mapReduce(map, reduce, "avg", query);
+	    collection.mapReduce(map, reduce, collection.getName()+"_avg", query);
 	}
 
-	return (Double) collection.getDB().getCollection("avg").findOne().get("value");
+	return (Double) collection.getDB().getCollection(collection.getName()+"_avg").findOne().get("value");
     }
 
     
     private void preCalculateTermDocumentCounts()  {
-	DBCollection nqiCollection = collection.getDB().getCollection("nqi");
+	DBCollection nqiCollection = collection.getDB().getCollection(collection.getName()+"_nqi");
 	if (nqiCollection.count() == 0) {
 	    System.out.println("Reindexing term counts");
 
@@ -157,7 +161,7 @@ public class GenericBM25Ranking<T extends SearchableDBObject> {
 		reduce  = readFile("src/ranking/nqi_reduce.js");
 		DBObject query = new BasicDBObject();
 
-		collection.mapReduce(map, reduce, "nqi", query);
+		collection.mapReduce(map, reduce, collection.getName()+"_nqi", query);
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    } catch (URISyntaxException e) {

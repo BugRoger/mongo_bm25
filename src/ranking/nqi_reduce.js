@@ -3,5 +3,5 @@ function(key, values) {
   for (var i=0; i < values.length; i++) {
     total += values[i].count;
   }
-  return total;
+  return {count: total};
 }   

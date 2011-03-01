@@ -10,22 +10,35 @@ import com.mongodb.MongoException;
 public class MongoDatastore {
     private static MongoDatastore INSTANCE;
 
-    private DB db;
+    private DB mongoSearchDB, ecohubDB;
 
     private MongoDatastore() throws UnknownHostException, MongoException {
 	Mongo m = new Mongo();
-	db = m.getDB("mongosearch");
+	mongoSearchDB = m.getDB("mongosearch");
+	ecohubDB      = m.getDB("ecohub");
 	getSamples().setObjectClass(Sample.class);
 	getStatuses().setObjectClass(Status.class);
+	getEcohubItems().setObjectClass(EcohubItem.class);
+    }
+    
+    public DB getMongoSearchDB() {
+	return mongoSearchDB;
+    }
+    
+    public DB getEcohubDB() {
+	return ecohubDB;
     }
 
     public DBCollection getSamples() {
-	return db.getCollection("samples");
+	return mongoSearchDB.getCollection("samples");
     }
 
     public DBCollection getStatuses() {
-	return db.getCollection("statuses");
-
+	return mongoSearchDB.getCollection("statuses");
+    }
+    
+    public DBCollection getEcohubItems() {
+	return ecohubDB.getCollection("ecohubItems");
     }
 
     public void save(Sample sample) {
