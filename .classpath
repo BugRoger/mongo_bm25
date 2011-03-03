@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/language/mg4j-3.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/language/fastutil-6.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/mongo-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/jericho-html-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
